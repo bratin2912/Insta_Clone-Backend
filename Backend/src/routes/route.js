@@ -95,6 +95,6 @@ router.get("/user", async (req, res) => {
 })
 
 router.get("/user/image/:fileName", async (req, res) => {
-    res.sendFile(path.join(__dirname, `../uploads/${req.params.fileName}`));
+    res.sendFile(path.resolve(__dirname, `../uploads/${req.params.fileName}`));
 })
 module.exports = router;
