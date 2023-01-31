@@ -5,7 +5,9 @@ const app=express();
 
 const userRoute=require("./routes/route");
 
-app.use(fileUpload())
+app.use(fileUpload({
+    useTempFiles:true
+}))
 
 app.use(cors())
 
