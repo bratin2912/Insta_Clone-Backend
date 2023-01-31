@@ -1,7 +1,7 @@
 const mongoose=require("mongoose");
 
 const userSchema=new mongoose.Schema({
-    file_name:String,
+    url:String,
     author:String,
     location:String,
     description:String,
