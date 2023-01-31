@@ -1,17 +1,18 @@
 const router = require("express").Router();
-const fs = require("fs")
-const path = require("path");
 const cloudinary = require("../Utils/cloudinary");
 const User = require("../model/userModel");
 
-router.post('/api/user', async(req, res) => {
-    const { author, location, description,imageFile } = req.body;
+router.post('/api/user', async (req, res) => {
+    const { author, location, description } = req.body;
+    const { imageFile } = req.files;
     const fileExtension = imageFile.name.split(".");
     const extract = fileExtension[fileExtension.length - 1];
     if (['jpg', 'png', 'svg', 'jpeg'].includes(extract)) {
         const likes = Math.floor(Math.random() * (70 - 1 + 1)) + 1;
-        cloudinary.uploader.upload(imageFile, { upload_preset: "10x_Project" }, async (err, result) => {
-            console.log(result);
+        const reader = new FileReader();
+        reader.readAsDataURL(imageFile);
+        const fileUrl = reader.result;
+        cloudinary.uploader.upload(fileUrl, { upload_preset: "10x_Project" }, async (err, result) => {
             if (err) {
                 res.send({
                     status: "Failed",
@@ -25,7 +26,7 @@ router.post('/api/user', async(req, res) => {
                         author,
                         location,
                         description,
-                        url:result.url,
+                        url: result.url,
                         likes
 
                     })
@@ -45,13 +46,13 @@ router.post('/api/user', async(req, res) => {
         });
     }
     else {
-            return res.status(404).send({
-                status: "Failed",
-                message: "File extension must be jpg/jpeg/png/svg"
-            })
-        }
+        return res.status(404).send({
+            status: "Failed",
+            message: "File extension must be jpg/jpeg/png/svg"
+        })
+    }
 })
-  
+
 
 router.get("/user", async (req, res) => {
     try {
@@ -66,3 +67,5 @@ router.get("/user", async (req, res) => {
         })
     }
 })
+
+module.exports = router;

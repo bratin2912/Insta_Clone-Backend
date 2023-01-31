@@ -3,9 +3,9 @@ const cors=require("cors");
 const fileUpload=require("express-fileupload")
 const app=express();
 
-const userRoute=require("./routes/route");
+const userRoute=require("../src/routes/route");
 
-// app.use(fileUpload())
+app.use(fileUpload())
 
 app.use(cors())
 
